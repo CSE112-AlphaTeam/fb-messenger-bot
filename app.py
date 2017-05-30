@@ -61,7 +61,7 @@ def determineResponse(recipient_id, message_text):
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
-    r = requests.post("https://graph.facebook.com/v2.6/{recipient}".format(recipient=recipient_id), params=params)
+    r = requests.get("https://graph.facebook.com/v2.6/{recipient}".format(recipient=recipient_id), params=params)
     normalized_response = r.json()
     log(normalized_response)
     return normalized_response["first_name"]
