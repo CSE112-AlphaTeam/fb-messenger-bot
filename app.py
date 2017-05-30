@@ -63,6 +63,7 @@ def determineResponse(recipient_id, message_text):
     }
     r = requests.post("https://graph.facebook.com/v2.6/{recipient}".format(recipient=recipient_id), params=params)
     normalized_response = r.json()
+    log(normalized_response)
     return normalized_response["first_name"]
 
     #return replyDict.get(message_text, "Enque is processing your reuqest.")
