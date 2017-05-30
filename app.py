@@ -38,7 +38,8 @@ def webhook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"].get("text", "no text provided")  # the message's text
-                    send_message(sender_id, "Alpha Team is processing your request...")
+                    message_to_send = determineResponse(recipient_id, message_text)
+                    send_message(sender_id, message_to_send)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -51,6 +52,18 @@ def webhook():
 
     return "ok", 200
 
+def determineResponse(recipient_id, message_text):
+    replyDict = [
+        "Make an appointment at Peter's Hotness Boutique at 5pm on Thursday.": "Your appointment has been set for Peter's Hotness Boutique! 5pm on Thursday, June 1st!",
+        "Thanks!":"You're welcome!",
+        "Remind me of my appointment on Thursday.":"Okay, I will remind you at 3pm on Thursday, June 1st about your appointment at Peter's Hotness Boutique."
+    ]
+    # params = {
+    #     "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    # }
+    # r = requests.post("https://graph.facebook.com/v2.6/{recipient}".format(recipient=recipient_id), params=params)
+    #
+    return replyDict.get(message_text, "Enque is processing your reuqest.")
 
 def send_message(recipient_id, message_text):
 
